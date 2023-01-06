@@ -1,17 +1,8 @@
-var fs = require('fs');
-// var http = require('http');
-var https = require('https');
 const app = require("express")();
-// const server = require("http").createServer(app);
-// var httpServer = http.createServer(app);
-var privateKey  = fs.readFileSync('../private.key', 'utf8');
-var certificate = fs.readFileSync('../primary.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
-var httpsServer = https.createServer(credentials, app);
-
+const server = require("http").createServer(app);
 const cors = require("cors");
 
-const io = require("socket.io")(httpsServer, {
+const io = require("socket.io")(server, {
 	cors: {
 		origin: "*",
 		methods: [ "GET", "POST" ]
@@ -19,6 +10,8 @@ const io = require("socket.io")(httpsServer, {
 });
 
 app.use(cors());
+
+const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
 	res.send('Running');
@@ -73,6 +66,7 @@ let Rec_id_check=[];
 // =========Start ZOOM=====================================================
 });
 // httpServer.listen(5001, () => console.log(`Server is running on port 5001`));
-httpsServer.listen(5000, () => console.log(`Server is running on port 5000`));
+// httpsServer.listen(5000, () => console.log(`Server is running on port 5000`));
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
 

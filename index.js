@@ -1,4 +1,3 @@
-
 var fs = require('fs');
 // var http = require('http');
 var https = require('https');
@@ -10,8 +9,6 @@ var certificate = fs.readFileSync('../primary.crt', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 var httpsServer = https.createServer(credentials, app);
 
-
-const Doc=["rSchn6HysAbtHYsmAAAB","GfNQy2R-uaerwIuxAAAD","0J9SsORqPazwGHVUAAAB"];
 const cors = require("cors");
 
 const io = require("socket.io")(httpsServer, {
@@ -53,21 +50,21 @@ io.on("connection", (socket) => {
 	});
 
 let Rec_id_check=[];
-	socket.on("Rec_socketId",(Rec_id)=>{
+	socket.on("Rec_socketId",({Rec_id,Value})=>{
 		// socket.broadcast.emit('socketId',id)
-		io.to(socket.id).emit('socket_client', Rec_id);
+		io.to(Rec_id).emit('rec_message', {caller_id:socket.id, Val:Value});
 		Rec_id_check=socket.id;
-		console.log("Mecheck ",Rec_id +" Me:- "+ Rec_id_check)
+		console.log("Mecheck ",Rec_id +" Me:- "+ Rec_id_check+" Value:- "+ Value)
 	});
 // =========End Socket=====================================================
 
 
 // =========Start ZOOM=====================================================
-	socket.on("send_message",({mecheck,Value})=>{
-		// socket.broadcast.emit('rec_message',Value)
-		io.to(mecheck).emit("rec_message",Value);
-		console.log("MeCheck= "+mecheck +" Value= "+ Value)
-	});
+	// socket.on("send_message",({mecheck,Value})=>{
+	// 	// socket.broadcast.emit('rec_message',Value)
+	// 	io.to(mecheck).emit("rec_message",Value);
+	// 	console.log("MeCheck= "+mecheck +" Value= "+ Value)
+	// });
 	// socket.on("rec_message",(rec_data2)=>{
 	// 	// socket.broadcast.emit('socketId',id)
 	// 	io.to(Rec_id).emit(rec_data2);
@@ -77,3 +74,5 @@ let Rec_id_check=[];
 });
 // httpServer.listen(5001, () => console.log(`Server is running on port 5001`));
 httpsServer.listen(5000, () => console.log(`Server is running on port 5000`));
+
+

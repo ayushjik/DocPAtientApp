@@ -1,3 +1,4 @@
+
 var fs = require('fs');
 // var http = require('http');
 var https = require('https');
@@ -52,22 +53,21 @@ io.on("connection", (socket) => {
 	});
 
 let Rec_id_check=[];
-	socket.on("Rec_socketId",({Rec_id,Value})=>{
-		// console.log("Mecheck 2 =",Rec_id +" Me 2 = "+ Rec_id_check)
+	socket.on("Rec_socketId",(Rec_id)=>{
 		// socket.broadcast.emit('socketId',id)
-		io.to(Rec_id).emit('rec_message', {caller_id:socket.id, Val:Value});
+		io.to(socket.id).emit('socket_client', Rec_id);
 		Rec_id_check=socket.id;
-		console.log("Mecheck ",Rec_id +" Me:- "+ Rec_id_check+" Value:- "+ Value)
+		console.log("Mecheck ",Rec_id +" Me:- "+ Rec_id_check)
 	});
 // =========End Socket=====================================================
 
 
 // =========Start ZOOM=====================================================
-	// socket.on("send_message",({mecheck,Value})=>{
-	// 	// socket.broadcast.emit('rec_message',Value)
-	// 	io.to(mecheck).emit("rec_message",Value);
-	// 	console.log("MeCheck= "+mecheck +" Value= "+ Value)
-	// });
+	socket.on("send_message",({mecheck,Value})=>{
+		// socket.broadcast.emit('rec_message',Value)
+		io.to(mecheck).emit("rec_message",Value);
+		console.log("MeCheck= "+mecheck +" Value= "+ Value)
+	});
 	// socket.on("rec_message",(rec_data2)=>{
 	// 	// socket.broadcast.emit('socketId',id)
 	// 	io.to(Rec_id).emit(rec_data2);

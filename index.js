@@ -9,6 +9,30 @@ var credentials = {key: privateKey, cert: certificate};
 var httpsServer = https.createServer(credentials, app);
 // const numCPUs = require("os").cpus().length;
 const bodyParser=require("body-parser");
+
+// =======REDIS===================================
+// const Redis = require('redis');
+// const client = Redis.createClient({
+//     // url: 'redis://redis:6380',
+//     host: '127.0.0.1',
+//     port: 6380,
+//     password: ''
+// });
+// client.connect('connect', function() {
+//     console.log('Connected to Redis');
+// });
+
+// client.set('mykey', 'myvalue', Redis.print);
+
+// client.get('mykey', function(error, result) {
+//     if (error) {
+//         console.log("ERROR= "+error);
+//         throw error;
+//     }
+//     console.log('GET result ->' + result);
+// });
+// ================================================
+
 const cors = require("cors");
 
 const io = require("socket.io")(httpsServer, {
@@ -124,5 +148,27 @@ console.log(" Me:- "+ Rec_id_check+" Rec_id_Doctor:- "+ Rec_id_Doctor)
 		// console.log("Mecheck ",Rec_id +" Me:- "+ Rec_id_check+" Value:- "+ Value)
 	});
 // =========End Socket=====================================================
+
+// socket.on("Step_count_Id",({Doc_id,Step_Count})=>{
+// 		io.to(Rec_id_Doctor).to(socket.id).emit('Step_count_value_rec', {scount:Step_Count});
+// 		console.log("Doc_id:- "+ Doc_id, "STep_count= "+Step_Count)
+// 	})
+
+// =========Start ZOOM=====================================================
+	// socket.on("send_message",({mecheck,Value})=>{
+	// 	// socket.broadcast.emit('rec_message',Value)
+	// 	io.to(mecheck).emit("rec_message",Value);
+	// 	console.log("MeCheck= "+mecheck +" Value= "+ Value)
+	// });
+	// socket.on("rec_message",(rec_data2)=>{
+	// 	// socket.broadcast.emit('socketId',id)
+	// 	io.to(Rec_id).emit(rec_data2);
+	// 	console.log("message ",rec_data2 +"sender_Socketmsg:- "+ socket.id+"Rec_Socketmsg:- "+ Rec_id)
+	// });
+// =========Start ZOOM=====================================================
+});
 	httpsServer.listen(5000, () => console.log(`Server is running on port 5000`));
 	console.log(`Worker ${process.pid} started in last`);
+
+
+
